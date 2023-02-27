@@ -113,7 +113,8 @@ void TIM3_IRQHandler(void)
 
 ### Communication 
 #### 1. SPI  
-* MSB 방식으로 Clock을 1비트씩 제어합니다.
+* GPIO를 통해 2개의 Clock을 생성합니다. (DIO, SCLK)  
+* MSB 방식으로 X 값을 1 bit씩 8회 출력합니다. (1bite = 8bit)
 ```C
 void send(uint8_t X) 
 {
@@ -130,7 +131,7 @@ void send(uint8_t X)
 	}
 }
 ```
-* STM32에서 제공하는 SPI 기능을 사용합니다.
+* STM32에서 제공하는 SPI 기능을 사용합니다. (SPI -> DIO, SCLK), (GPIO -> RCLK)
 ```C
 static SPI_HandleTypeDef *fhspi;
 
@@ -139,15 +140,14 @@ void send(uint8_t X)
  	HAL_SPI_Transmit(fhspi, &X, 1, 100);
 }
 ```
-* RCLK을 HIGH -> LOW -> HIGH 순차대로 출력하여 16비트 정보를 전송합니다.
+* RCLK을 HIGH -> LOW -> HIGH 순차대로 출력하여 16bit 정보를 전송합니다.
 ```C
 void send_port(uint8_t X, uint8_t port) 
 {
 	send(X);
-	send(port);
-	
-	HAL_GPIO_WritePin(PB14_FND_RCLK_GPIO_Port, PB14_FND_RCLK_Pin, LOW);
-	HAL_GPIO_WritePin(PB14_FND_RCLK_GPIO_Port, PB14_FND_RCLK_Pin, HIGH);
+	send(port);	
+	HAL_GPIO_WritePin(FND_RCLK_GPIO_Port, FND_RCLK_Pin, LOW);
+	HAL_GPIO_WritePin(FND_RCLK_GPIO_Port, FND_RCLK_Pin, HIGH);
 }
 ```
 
