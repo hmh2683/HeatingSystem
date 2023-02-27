@@ -87,9 +87,10 @@ while (1)
 ```
 
 ### Interrupt
-* 다수의 입력을 방지하기 위해 HAL_GetTick 함수를 사용하고 CLICK_TIME 200 설정하며 0.2 초 마다 실행합니다. (1 Tick = 1ms)
+* 다수의 입력을 방지하기 위해 HAL_GetTick 함수를 사용하고 CLICK_TIME을 200으로 설정하며 0.2s 마다 실행합니다. (1 Tick = 1ms)
 ```C
-void EXTI0_IRQHandler(void) {
+void EXTI0_IRQHandler(void) 
+{
   HAL_GPIO_EXTI_IRQHandler(PB0_TEMP_UP_BUTTON_Pin);
 
 	if (HAL_GetTick() - before_time > CLICK_TIME) 
@@ -98,30 +99,31 @@ void EXTI0_IRQHandler(void) {
 	before_time = HAL_GetTick();
 }
 ```
-* RCC 모드를 활성화하고 TIM3 prescaler: 72, period: 100을 설정하여 100us마다 인터럽트를 생성합니다.
-* 초기화 상태 및 사용 상태를 확인하고 true이면 현재 온도 값을 가져와 FND로 표시합니다.
+* TIM3 prescaler: 72, period: 100으로 설정하여 100us 마다 Interrept를 실행합니다. (RCC Mode)
+* Sensor 초기화 상태 및 OneWire 실행 상태를 확인하고 참이라면 현재온도를 FND 모듈에 표시합니다.
 ```C
-void TIM3_IRQHandler(void) {
+void TIM3_IRQHandler(void)
+{
   HAL_TIM_IRQHandler(&htim3);
   
-	if (isTempSensorInit() && !isBusy()) {
-		digitTemp((int)(getCurrentTemp() * 10));
-	}
+  if (GetSensorInitState() && !GetBusy())
+	DisplayTemp((int)GetCurrentTemp() * 10);
 }
 ```
 
 ### Communication 
 #### 1. SPI  
-* 소프트웨어에서 직접 SPI 기능을 생성합니다.
-* MSB에서 시계를 1비트씩 제어합니다.
+* MSB 방식으로 Clock을 1비트씩 제어합니다.
 ```C
-void send(uint8_t X) {
-	for (int i = 8; i >= 1; i--) {
-		if (X & 0x80) {
+void send(uint8_t X) 
+{
+	for (int i = 8; i >= 1; i--) 
+	{
+		if (X & 0x80) 
 			HAL_GPIO_WritePin(FND_DIO_GPIO_Port, FND_DIO_Pin, HIGH); 
-		} else {
+		else 
 			HAL_GPIO_WritePin(FND_DIO_GPIO_Port, FND_DIO_Pin, LOW);
-		}
+			
 		X <<= 1;
 		HAL_GPIO_WritePin(FND_SCLK_GPIO_Port, FND_SCLK_Pin, LOW);
 		HAL_GPIO_WritePin(FND_SCLK_GPIO_Port, FND_SCLK_Pin, HIGH);
@@ -136,9 +138,9 @@ void send(uint8_t X) {
  	HAL_SPI_Transmit(fhspi, &X, 1, 100);
 }
 ```
-* RCLK를 LOW로 낮췄다가 다시 HIGH로 올려 16비트 정보를 전송합니다.
+* RCLK을 HIGH -> LOW -> HIGH 순차대로 출력하여 16비트 정보를 전송합니다.
 ```C
-void sendPort(uint8_t X, uint8_t port) {
+void send_port(uint8_t X, uint8_t port) {
 	send(X);
 	send(port);
 	HAL_GPIO_WritePin(PB14_FND_RCLK_GPIO_Port, PB14_FND_RCLK_Pin, LOW);
