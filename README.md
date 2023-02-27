@@ -21,7 +21,7 @@
 <br/> <br/>
 
 ## Pinout Configuration
-<a href="#"><img src="https://github.com/hmh2683/heatingroom.project/blob/main/images/pinout.png" width="400px" height="400px"></a>
+<a href="#"><img src="https://github.com/hmh2683/HeatingSystem/blob/main/image/pinout.png" width="400px" height="400px"></a>
 
 ### System Core
 * GPIO -> INPUT -> PB0_TEMP_UP, PB1_TEMP_SET, PB2_TEMP_DOWN, PB12_START_SW
@@ -59,7 +59,7 @@
 
 ## Clock Configuration
 * A clock frequency of 72 MHz is generated using the crystal resonator built into the STM32 MCU.
-<a href="#"><img src="https://github.com/hmh2683/heatingroom.project/blob/main/images/clock.png" width="1000px" height="400px"></a> 
+<a href="#"><img src="https://github.com/hmh2683/HeatingSystem/blob/main/image/clock.png" width="1000px" height="400px"></a> 
 
 <br/> <br/>
 
@@ -256,8 +256,8 @@ void OneWire_SelectWithPointer(OneWire_t *OneWireStruct, uint8_t *ROM) {
 
 ## Result
 ### Photo
-<a href="#"><img src="https://github.com/hmh2683/heatingroom.project/blob/main/images/result.png" width="500px" height="400px"></a>
-<a href="#"><img src="https://github.com/hmh2683/heatingroom.project/blob/main/images/uart.png" width="500px" height="400px"></a>
+<a href="#"><img src="https://github.com/hmh2683/HeatingSystem/blob/main/image/result.png" width="500px" height="400px"></a>
+<a href="#"><img src="https://github.com/hmh2683/HeatingSystem/blob/main/image/uart.png" width="500px" height="400px"></a>
 
 ### Video
 [![Heating room temperature control system](http://img.youtube.com/vi/CozpDULafgo/0.jpg)](https://youtu.be/CozpDULafgo?t=0s) 
