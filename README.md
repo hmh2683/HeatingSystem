@@ -3,9 +3,9 @@
 * 개발 환경 : STM32CubeIDE 1.9.0
 * 개발 언어 : C
 * 개발 목표 
-<br/> STM32에서 센서의 온도 정보를 호출하여 FND 모듈에 현재 온도를 표시합니다.
-<br/> 3개의 버튼과 OLED 모듈을 통해 설정 온도를 선택하고, OLED 모듈을 통해 릴레이의 상태 정보를 표시한다.
-<br/> 설정온도와 현재온도를 비교하여 릴레이를 제어하고 설정온도를 유지 및 관리합니다.
+<br/> Sensor 모듈에서 출력한 현재 온도를 FND 모듈에 표시합니다.
+<br/> Button을 통해 설정온도를 선택하고, OLED 모듈에 설정온도와 Relay 동작상태를 표시합니다.
+<br/> 설정온도와 현재온도를 비교하며 Relay를 제어하고 설정온도를 유지 및 관리합니다.
 
 <br/> <br/>
 
@@ -57,47 +57,44 @@
 <br/> <br/>
 
 ## Clock Configuration
-* 72 MHz의 클럭 주파수는 STM32 MCU에 내장된 수정 공진기를 사용하여 생성됩니다.
+* STM32 MCU의 수정 발진기를 사용하여 72 MHz의 클럭 주파수를 생성합니다.
 <a href="#"><img src="https://github.com/hmh2683/HeatingSystem/blob/main/image/clock.png" width="1000px" height="400px"></a> 
 
 <br/> <br/>
 
 ## Code Review
 ### Main
-* if 문은 중단된 버튼 변수에 따라 실행됩니다.
-* LED는 시동 스위치의 상태에 따라 제어됩니다.
-* 온도 변환을 시작하고 온도 값을 가져옵니다.
-* 스위치를 켜면 온도값에 따라 릴레이가 동작하고, 스위치를 끄면 온도값에 상관없이 릴레이가 동작하지 않는다.
+* SelectButton 함수에서 Button 입력에 대한 OLED, LED, USART 를 제어합니다. 
+* 온도 변환 상태를 확인하고 현재온도를 반환합니다. 
+* Switch ON, Relay는 GetTemp 함수의 반환 값과 SelectButton 함수 내 전역 변수값을 비교하며 작동합니다. 
+* Switch OFF, Relay는 값에 상관없이 작동하지 않습니다.
 ```C
-while (1) {
-	checkButton();
-	checkStartSw();
+float temperature = 0.0;
+while (1)
+{
+	SelectButton();
 
-	if (!isConverted()) 
-		startConvert();
-	
-	checkConvert();
-	if (!isConverted()) {
-		temperature = getTemp();
-		if (getStartSw() == ON_t) {
-			relayControl(temperature);
-		} else {
-			if (getRelayState() == ON_t) 
-				relayOnOff(OFF_t);
-		}
+	if (!GetConvertState())
+		StartConverting();
+	CheckConverting();
+
+	if (!GetConvertState()) // 온도변환 완료 시
+	{
+		temperature = GetTemp();
+		CheckSwitch((int)temperature);
 	}
 }
 ```
 
 ### Interrupt
-* 인터럽트가 발생하면 HAL_GetTick 함수의 반환값과 CLICK_TIME 값을 비교하여 if 문을 실행합니다.
+* 다수의 입력을 방지하기 위해 HAL_GetTick 함수를 사용하고 CLICK_TIME 200 설정하며 0.2 초 마다 실행합니다. (1 Tick = 1ms)
 ```C
 void EXTI0_IRQHandler(void) {
   HAL_GPIO_EXTI_IRQHandler(PB0_TEMP_UP_BUTTON_Pin);
 
-	if (HAL_GetTick() - before_time > CLICK_TIME) {
+	if (HAL_GetTick() - before_time > CLICK_TIME) 
 		button_up = 1;
-	}
+	
 	before_time = HAL_GetTick();
 }
 ```
