@@ -1,11 +1,4 @@
 # Heating System
-* Period : 2022.03-2022.08 (6 months)
-* Development Environment : STM32CubeIDE 1.9.0
-* Development Language : C
-* Development Goals  
-  * The current temperature is displayed on the FND module by calling the temperature information of the sensor from the STM32.
-  * Select the set temperature through 3 buttons and OLED module, and display status information of relay through OLED module.
-  * Control relay by comparing set temperature with current temperature and maintain and manage set temperature.
 * 개발기간 : 2022.03 ~ 2022.08 
 * 개발환경 : STM32CubeIDE 1.9.0
 * 개발언어 : C
@@ -30,7 +23,7 @@
 <a href="#"><img src="https://github.com/hmh2683/HeatingSystem/blob/main/image/pinout.png" width="400px" height="400px"></a>
 
 ### System Core
-* GPIO -> INPUT -> PB0_TEMP_UP, PB1_TEMP_SET, PB2_TEMP_DOWN, PB12_START_SW
+* GPIO -> INPUT -> PB0_UP_BUTTON, PB1_SET_BUTTON, PB2_DOWN_BUTTON, PB12_START_SW
 * GPIO -> OUTPUT -> PA3_TEMP_DATA, PB5_RELAY, PB6_BUTTON_LED, PB7_START_LED, PB14_FND_RCLK
 * SPI -> PB13_FND_SCLK, PB15_FND_DIO
 * I2C -> PB10_I2C2_SCL, PB11_I2C2_SDA
@@ -266,7 +259,7 @@ void OneWire_SelectWithPointer(OneWire_t *OneWireStruct, uint8_t *ROM) {
 <a href="#"><img src="https://github.com/hmh2683/HeatingSystem/blob/main/image/uart.png" width="500px" height="400px"></a>
 
 ### Video
-[![Heating room temperature control system](http://img.youtube.com/vi/CozpDULafgo/0.jpg)](https://youtu.be/CozpDULafgo?t=0s) 
+[![Heating System](http://img.youtube.com/vi/CozpDULafgo/0.jpg)](https://youtu.be/CozpDULafgo?t=0s) 
 
 <br/> <br/>
 
