@@ -1,8 +1,8 @@
 # Heating System  
-* Development period : 2022.03 ~ 2022.08 
-* Development environment : STM32CubeIDE 1.9.0
-* Development language : C
-* Development Goals 
+* 개발 기간 : 2022.03 ~ 2022.08 
+* 개발 환경 : STM32CubeIDE 1.9.0
+* 개발 언어 : C
+* 개발 목표 
   * STM32에서 센서의 온도 정보를 호출하여 FND 모듈에 현재 온도를 표시합니다.
   * 3개의 버튼과 OLED 모듈을 통해 설정 온도를 선택하고, OLED 모듈을 통해 릴레이의 상태 정보를 표시한다.
   * 설정온도와 현재온도를 비교하여 릴레이를 제어하고 설정온도를 유지 및 관리합니다.
