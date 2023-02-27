@@ -11,7 +11,7 @@
 <br/> <br/>
 
 ## Microcontroller
-<a href="#"><img src="https://github.com/hmh2683/heatingroom.project/blob/main/images/mcu.png" width="350px" height="350px"></a> 
+<a href="#"><img src="https://github.com/hmh2683/HeatingSystem/blob/main/image/mcu.png" width="350px" height="350px"></a> 
 * Part : STM32F103C8T6
 * Manufacturer : ST-Microelectronics
 * Core : ARM Cortex-M3
