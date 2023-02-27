@@ -134,15 +134,18 @@ void send(uint8_t X)
 ```C
 static SPI_HandleTypeDef *fhspi;
 
-void send(uint8_t X) {
+void send(uint8_t X) 
+{
  	HAL_SPI_Transmit(fhspi, &X, 1, 100);
 }
 ```
 * RCLK을 HIGH -> LOW -> HIGH 순차대로 출력하여 16비트 정보를 전송합니다.
 ```C
-void send_port(uint8_t X, uint8_t port) {
+void send_port(uint8_t X, uint8_t port) 
+{
 	send(X);
 	send(port);
+	
 	HAL_GPIO_WritePin(PB14_FND_RCLK_GPIO_Port, PB14_FND_RCLK_Pin, LOW);
 	HAL_GPIO_WritePin(PB14_FND_RCLK_GPIO_Port, PB14_FND_RCLK_Pin, HIGH);
 }
@@ -152,7 +155,8 @@ void send_port(uint8_t X, uint8_t port) {
 * 명령 테이블에 등록된 명령은 슬레이브 주소로 전송됩니다.
 * OLED를 제어하기 위해 7비트 단위로 전송합니다.
 ```C
-void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data) {
+void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data) 
+{
 	uint8_t dt[2];
 	dt[0] = reg;
 	dt[1] = data;
@@ -161,7 +165,8 @@ void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data) {
 ```
 * 슬레이브 주소에 1024비트 값을 등록합니다.
 ```C
-void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_t count) {
+void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_t count) 
+{
 	uint8_t dt[256];
 	dt[0] = reg;
 	uint8_t i;
