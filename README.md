@@ -152,8 +152,7 @@ void send_port(uint8_t X, uint8_t port)
 ```
 
 #### 2. I2C 
-* 명령 테이블에 등록된 명령은 슬레이브 주소로 전송됩니다.
-* OLED를 제어하기 위해 7비트 단위로 전송합니다.
+* 명령 테이블에 등록된 값을 Slave 주소로 전송합니다. (16bit)
 ```C
 void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data) 
 {
@@ -163,7 +162,8 @@ void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data)
 	HAL_I2C_Master_Transmit(&hi2c2, address, dt, 2, 10);
 }
 ```
-* 슬레이브 주소에 1024비트 값을 등록합니다.
+* Buffer의 1,024bit data 정보를 Slave 주소에 전송합니다. (128 * 8 = 1,024)
+* SSD1306_UpdateScreen 함수에서 해당 함수를 8회 호출하여 8,192(bit) 정보를 전송합니다. (128 * 64 = 8,192)
 ```C
 void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_t count) 
 {
@@ -177,8 +177,8 @@ void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_
 ```
 
 #### 3. UART
-* STM32에서 제공하는 UART 핸들러와 전송 기능이 사용됩니다.
-* printf 함수를 구현하는 데 사용됩니다.
+* HAL Driver의 함수를 사용하여 UART 통신을 수행합니다.
+* printf 함수를 구현하여 사용합니다.
 ```C
 extern UART_HandleTypeDef *huart1;
 
