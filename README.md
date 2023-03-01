@@ -219,7 +219,9 @@ uint8_t OneWire_Reset(OneWire_t *OneWireStruct)
 	return i;
 }
 ```
+
 * ROM 주소를 선택합니다. 
+```C
 void OneWire_SelectWithPointer(OneWire_t *OneWireStruct, uint8_t *ROM) {
 	uint8_t i;
 	
