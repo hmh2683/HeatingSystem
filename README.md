@@ -86,6 +86,8 @@ while (1)
 }
 ```
 
+<br/>
+
 ### Interrupt
 * 다수의 입력을 방지하기 위해 HAL_GetTick 함수를 사용하고 CLICK_TIME을 200으로 설정하며 0.2s 마다 실행합니다. (1 Tick = 1ms)
 ```C
@@ -110,6 +112,8 @@ void TIM3_IRQHandler(void)
 	DisplayTemp((int)GetCurrentTemp() * 10);
 }
 ```
+
+<br/>
 
 ### Communication 
 #### 1. SPI  
@@ -225,7 +229,6 @@ void OneWire_SelectWithPointer(OneWire_t *OneWireStruct, uint8_t *ROM) {
 	
 }
 ```
-
 * LSB 방식으로 8 bit 정보를 전송합니다. (8 bit 정보는 명령 테이블 통해 확인할 수 있습니다.)
 * SetResolution 함수와 StartAll 함수에서 Slave(Sensor)에 명령 및 ROM 주소를 전송할 때 사용합니다.  
 ```C
