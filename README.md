@@ -245,7 +245,6 @@ void OneWire_WriteByte(OneWire_t *OneWireStruct, uint8_t byte)
 }
 ```
 * Sensor 모듈의 전환 상태를 확인하고 bit 정보가 완료(1) 실행(0)을 반환합니다.
-* 현재 온도 정보는 완료(1) 일때 Sensor 구조체 변수에서 획득할 수 있습니다.
 ```C
 uint8_t OneWire_ReadBit(OneWire_t *OneWireStruct)
 {
@@ -279,5 +278,5 @@ uint8_t OneWire_ReadBit(OneWire_t *OneWireStruct)
 
 ## Realization
 * STM32CubeIDE에서 GUI를 통해 생성된 초기화 코드를 해석하고 HAL 드라이버의 입출력 함수를 제어하며 ST3M32 MCU 기본을 학습하였습니다. 
-* Timer 및 Interrept가 발생하도록 Pinout 및 Clock 을 설정하고, Interrept 영역에서 외부 파일을 포함하며 Button, Sensor, FND 기능을 확인하였습니다.  
+* Timer 및 Interrept가 발생하도록 Pinout 및 Clock 을 설정하고, Interrept 영역에서 외부 파일을 포함하며 각각의 모듈 기능을 확인하였습니다.  
 * SPI, I2C, UART, ONEWIRE 등 통신의 기초를 학습하고, 오픈소스 수정부터 프로젝트 적용까지의 전 과정을 진행하며 실무 역량을 강화하였습니다.
