@@ -152,7 +152,7 @@ void send_port(uint8_t X, uint8_t port)
 ```
 
 #### 2. I2C 
-* 명령 테이블에 등록된 값을 Slave 주소로 전송합니다. (16bit)
+* 명령 테이블에 등록된 16 bit 정보를 Slave 주소로 전송합니다. (8 + 8 = 16)
 ```C
 void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data) 
 {
@@ -162,8 +162,8 @@ void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data)
 	HAL_I2C_Master_Transmit(&hi2c2, address, dt, 2, 10);
 }
 ```
-* Buffer의 1,024bit data 정보를 Slave 주소에 전송합니다. (128 * 8 = 1,024)
-* SSD1306_UpdateScreen 함수에서 해당 함수를 8회 호출하여 8,192(bit) 정보를 전송합니다. (128 * 64 = 8,192)
+* Buffer의 1,024 bit 정보를 Slave 주소에 전송합니다. (128 * 8 = 1,024)
+* SSD1306_UpdateScreen 함수에서 해당 함수를 8회 호출하여 8,192 bit 정보를 전송합니다. (128 * 64 = 8,192)
 ```C
 void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_t count) 
 {
@@ -182,52 +182,61 @@ void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_
 ```C
 extern UART_HandleTypeDef *huart1;
 
-int _write(int file, char *p, int len) {
+int _write(int file, char *p, int len) 
+{
 	HAL_UART_Transmit(&huart1, (uint8_t*) p, len, 10);
 	return len;
 }
 ```
 #### 4. ONEWIRE
-* 읽기 비트 값이 낮으면 초기화에 성공합니다.
-```C
-inline uint8_t OneWire_Reset(OneWire_t *OneWireStruct) {
+* 초기화를 진행합니다. (0 = OK, 1 = ERROR)
+uint8_t OneWire_Reset(OneWire_t *OneWireStruct) 
+{
 	uint8_t i;
 
 	ONEWIRE_LOW(OneWireStruct);
 	ONEWIRE_OUTPUT(OneWireStruct);
 	ONEWIRE_DELAY(480);
 	ONEWIRE_DELAY(20);
+
 	ONEWIRE_INPUT(OneWireStruct);
 	ONEWIRE_DELAY(70);
 	i = HAL_GPIO_ReadPin(OneWireStruct->GPIOx, OneWireStruct->GPIO_Pin);
 	ONEWIRE_DELAY(410);
-	
+
 	return i;
 }
-```
-* 슬레이브 장치로 명령 정보를 보냅니다.
+
+* ROM 주소를 선택합니다. 
 ```C
-inline void OneWire_WriteBit(OneWire_t *OneWireStruct, uint8_t bit) {
-	if (bit) {
-		ONEWIRE_LOW(OneWireStruct);
-		ONEWIRE_OUTPUT(OneWireStruct);
-		ONEWIRE_DELAY(10);
-		ONEWIRE_INPUT(OneWireStruct);	
-		ONEWIRE_DELAY(55);
-		ONEWIRE_INPUT(OneWireStruct);
-	} else {
-		ONEWIRE_LOW(OneWireStruct);
-		ONEWIRE_OUTPUT(OneWireStruct);
-		ONEWIRE_DELAY(65);
-		ONEWIRE_INPUT(OneWireStruct);
-		ONEWIRE_DELAY(5);
-		ONEWIRE_INPUT(OneWireStruct);
+void OneWire_SelectWithPointer(OneWire_t *OneWireStruct, uint8_t *ROM) {
+	uint8_t i;
+	
+	OneWire_WriteByte(OneWireStruct, ONEWIRE_CMD_MATCHROM);
+	for (i = 0; i < 8; i++) 
+		OneWire_WriteByte(OneWireStruct, *(ROM + i));
+	
+}
+```
+
+* LSB 방식으로 8 bit 정보를 전송합니다. (8 bit 정보는 명령 테이블 통해 확인할 수 있습니다.)
+* SetResolution 함수와 StartAll 함수에서 Slave(Sensor)에 명령 및 ROM 주소를 전송할 때 사용합니다.  
+```C
+void OneWire_WriteByte(OneWire_t *OneWireStruct, uint8_t byte) 
+{
+	uint8_t i = 8;
+	while (i--) 
+	{
+		OneWire_WriteBit(OneWireStruct, byte & 0x01);
+		byte >>= 1;
 	}
 }
 ```
-* 읽기 비트가 낮으면 장치가 아직 계산 온도로 완료되지 않은 것입니다.
+* Sensor 모듈의 전환 상태를 확인하고 bit 정보가 완료(1) 실행(0)을 반환합니다.
+* 현재 온도 정보는 완료(1) 일때 Sensor 구조체 변수에서 획득할 수 있습니다.
 ```C
-inline uint8_t OneWire_ReadBit(OneWire_t *OneWireStruct) {
+uint8_t OneWire_ReadBit(OneWire_t *OneWireStruct)
+{
 	uint8_t bit = 0;
 
 	ONEWIRE_LOW(OneWireStruct);
@@ -235,23 +244,12 @@ inline uint8_t OneWire_ReadBit(OneWire_t *OneWireStruct) {
 	ONEWIRE_DELAY(2);
 	ONEWIRE_INPUT(OneWireStruct);
 	ONEWIRE_DELAY(10);	
-	if (HAL_GPIO_ReadPin(OneWireStruct->GPIOx, OneWireStruct->GPIO_Pin)) {
-		bit = 1;
-	}
-	ONEWIRE_DELAY(50);
 
-	return bit;
-}
-```
-* ROM 번호를 선택합니다.
-```C
-void OneWire_SelectWithPointer(OneWire_t *OneWireStruct, uint8_t *ROM) {
-	uint8_t i;
+	if (HAL_GPIO_ReadPin(OneWireStruct->GPIOx, OneWireStruct->GPIO_Pin)) 
+		bit = 1;
+	ONEWIRE_DELAY(50);
 	
-	OneWire_WriteByte(OneWireStruct, ONEWIRE_CMD_MATCHROM);
-	for (i = 0; i < 8; i++) {
-		OneWire_WriteByte(OneWireStruct, *(ROM + i));
-	}
+	return bit;
 }
 ```
 
