@@ -151,6 +151,8 @@ void send_port(uint8_t X, uint8_t port)
 }
 ```
 
+<br/>
+
 #### 2. I2C 
 * 명령 테이블에 등록된 16 bit 정보를 Slave 주소로 전송합니다. (8 + 8 = 16)
 ```C
@@ -176,6 +178,8 @@ void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_
 }
 ```
 
+<br/>
+
 #### 3. UART
 * HAL Driver의 함수를 사용하여 UART 통신을 수행합니다.
 * printf 함수를 구현하여 사용합니다.
@@ -188,8 +192,12 @@ int _write(int file, char *p, int len)
 	return len;
 }
 ```
+
+<br/>
+
 #### 4. ONEWIRE
 * 초기화를 진행합니다. (0 = OK, 1 = ERROR)
+```C
 uint8_t OneWire_Reset(OneWire_t *OneWireStruct) 
 {
 	uint8_t i;
@@ -206,9 +214,8 @@ uint8_t OneWire_Reset(OneWire_t *OneWireStruct)
 
 	return i;
 }
-
+```
 * ROM 주소를 선택합니다. 
-```C
 void OneWire_SelectWithPointer(OneWire_t *OneWireStruct, uint8_t *ROM) {
 	uint8_t i;
 	
