@@ -279,5 +279,6 @@ uint8_t OneWire_ReadBit(OneWire_t *OneWireStruct)
 
 ## Realization
 * STM32CubeIDE에서 GUI를 통해 생성된 초기화 코드를 해석하고 HAL 드라이버의 입출력 함수를 제어하며 ST3M32 MCU 기본을 학습하였습니다. 
-* Timer 및 Interrept 기능이 동작하도록 Interrept 영역에서 외부 파일을 포함하며, 그에 따른 변수값의 변화와 동작을 경험하였습니다.  
-* SPI, I2C, UART, ONEWIRE 등 통신 기초에 대해 학습하고, 탐색한 오픈소스를 수정하며 이 프로젝트에 적용하며 실무 역량을 강화하였습니다.
+* Timer 및 Interrept 가 발생되도록 Interrept 영역에서 외부 파일을 포함하며, 그에 따른 변수값의 변화와 동작을 경험하였습니다.  
+* SPI, I2C, UART, ONEWIRE 등 통신의 기초를 학습하였습니다.
+* 오픈소스 수정부터 프로젝트 적용까지의 전 과정을 진행하며 실무 역량을 강화하였습니다.
