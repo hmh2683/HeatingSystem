@@ -278,7 +278,6 @@ uint8_t OneWire_ReadBit(OneWire_t *OneWireStruct)
 <br/> <br/>
 
 ## Realization
-* 학부시절, AVR 프로세서 활용 프로젝트에서 처음으로 문법과 기술을 사용하는 방법을 배우고 상호작용하는 방법과 도서관에 포함시키는 방법에 대해 조금 더 배울 수 있었다.
-* STM32CubeIDE에서 GUI를 통해 생성된 초기화 코드를 사용하고, 그에 따른 Timer 및 Interrept 기능을 구현할 수 있었습니다.
-
-* SPI, I2C, UART, ONEWIRE 등 칩 간 통신에 대해 배울 수 있었고, 오픈소스를 이용해 소프트웨어 구현을 직접 수정하면서 통신 방식을 배우고 체험할 수 있었다.
+* STM32CubeIDE에서 GUI를 통해 생성된 초기화 코드를 해석하고 HAL 드라이버의 입출력 함수를 제어하며 ST3M32 MCU 기본을 학습하였습니다. 
+* Timer 및 Interrept 기능이 동작하도록 Interrept 영역에서 외부 파일을 포함하며, 그에 따른 변수값의 변화와 동작을 경험하였습니다.  
+* SPI, I2C, UART, ONEWIRE 등 통신 기초에 대해 학습하고, 탐색한 오픈소스를 수정하며 이 프로젝트에 적용하며 실무 역량을 강화하였습니다.
