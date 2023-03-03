@@ -101,7 +101,7 @@ void EXTI0_IRQHandler(void)
 	before_time = HAL_GetTick();
 }
 ```
-* TIM3 prescaler: 72, period: 100으로 설정하여 100us 마다 Timer를 실행합니다. (RCC Mode)
+* TIM3 prescaler: 72, period: 100으로 설정하여 100us 마다 Timer를 실행합니다. ((72 / 72M) * 100 = 100u)
 * 센서의 초기화 상태와 OneWire 실행 상태를 확인하고 참이라면 현재온도를 FND 모듈에 표시합니다.
 ```C
 void TIM3_IRQHandler(void)
