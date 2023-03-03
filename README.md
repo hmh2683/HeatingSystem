@@ -3,8 +3,8 @@
 * 개발 환경 : STM32CubeIDE 1.9.0
 * 개발 언어 : C
 * 개발 목표 
-  * 센서에서 출력한 현재 온도를 FND 모듈에 표시합니다.
-  * 버튼을 통해 설정온도를 선택하고, OLED 모듈에 설정온도와 Relay 동작상태를 표시합니다.
+  * 센서에서 출력한 현재 온도를 FND에 표시합니다.
+  * 버튼을 통해 설정온도를 선택하고, OLED에 설정온도와 Relay 동작상태를 표시합니다.
   * 설정온도와 현재온도를 비교하며 Relay를 제어하고 설정온도를 유지 및 관리합니다.
 
 <br/> <br/>
@@ -66,8 +66,8 @@
 ### Main
 * SelectButton 함수에서 버튼 입력에 대한 OLED, LED, USART 를 제어합니다. 
 * 온도 변환 상태를 확인하고 현재온도를 반환합니다. 
-* Switch ON, Relay는 GetTemp 함수의 반환 값과 SelectButton 함수 내 전역 변수값을 비교하며 작동합니다. 
-* Switch OFF, Relay는 값에 상관없이 작동하지 않습니다.
+* 스위치가 ON 이라면, Relay는 GetTemp 함수의 반환 값과 SelectButton 함수 내 전역 변수값을 비교하며 작동합니다. 
+* 스위치가 OFF 라면, Relay는 값에 상관없이 작동하지 않습니다.
 ```C
 float temperature = 0.0;
 while (1)
@@ -102,7 +102,7 @@ void EXTI0_IRQHandler(void)
 }
 ```
 * TIM3 prescaler: 72, period: 100으로 설정하여 100us 마다 Timer를 실행합니다. ((72 / 72M) * 100 = 100u)
-* 센서의 초기화 상태와 OneWire 실행 상태를 확인하고 참이라면 현재온도를 FND 모듈에 표시합니다.
+* 센서의 초기화 상태와 OneWire 실행 상태를 확인하고 참이라면 현재온도를 FND에 표시합니다.
 ```C
 void TIM3_IRQHandler(void)
 {
@@ -244,7 +244,7 @@ void OneWire_WriteByte(OneWire_t *OneWireStruct, uint8_t byte)
 	}
 }
 ```
-* Sensor 모듈의 전환 상태를 확인하고 bit 정보가 완료(1) 실행(0)을 반환합니다.
+* 센서의 전환 상태를 확인하고 bit 정보가 완료(1) 실행(0)을 반환합니다.
 ```C
 uint8_t OneWire_ReadBit(OneWire_t *OneWireStruct)
 {
