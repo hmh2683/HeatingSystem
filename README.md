@@ -3,8 +3,8 @@
 * 개발 환경 : STM32CubeIDE 1.9.0
 * 개발 언어 : C
 * 개발 목표 
-  * Sensor 모듈에서 출력한 현재 온도를 FND 모듈에 표시합니다.
-  * Button을 통해 설정온도를 선택하고, OLED 모듈에 설정온도와 Relay 동작상태를 표시합니다.
+  * 센서에서 출력한 현재 온도를 FND 모듈에 표시합니다.
+  * 버튼을 통해 설정온도를 선택하고, OLED 모듈에 설정온도와 Relay 동작상태를 표시합니다.
   * 설정온도와 현재온도를 비교하며 Relay를 제어하고 설정온도를 유지 및 관리합니다.
 
 <br/> <br/>
@@ -64,7 +64,7 @@
 
 ## Code Review
 ### Main
-* SelectButton 함수에서 Button 입력에 대한 OLED, LED, USART 를 제어합니다. 
+* SelectButton 함수에서 버튼 입력에 대한 OLED, LED, USART 를 제어합니다. 
 * 온도 변환 상태를 확인하고 현재온도를 반환합니다. 
 * Switch ON, Relay는 GetTemp 함수의 반환 값과 SelectButton 함수 내 전역 변수값을 비교하며 작동합니다. 
 * Switch OFF, Relay는 값에 상관없이 작동하지 않습니다.
@@ -101,8 +101,8 @@ void EXTI0_IRQHandler(void)
 	before_time = HAL_GetTick();
 }
 ```
-* TIM3 prescaler: 72, period: 100으로 설정하여 100us 마다 Interrept를 실행합니다. (RCC Mode)
-* Sensor 초기화 상태 및 OneWire 실행 상태를 확인하고 참이라면 현재온도를 FND 모듈에 표시합니다.
+* TIM3 prescaler: 72, period: 100으로 설정하여 100us 마다 Timer를 실행합니다. (RCC Mode)
+* 센서의 초기화 상태와 OneWire 실행 상태를 확인하고 참이라면 현재온도를 FND 모듈에 표시합니다.
 ```C
 void TIM3_IRQHandler(void)
 {
@@ -117,7 +117,7 @@ void TIM3_IRQHandler(void)
 
 ### Communication 
 #### 1. SPI  
-* GPIO를 통해 2개의 Clock을 생성합니다. (DIO, SCLK)  
+* GPIO를 통해 2개의 클럭을 생성합니다. (DIO, SCLK)  
 * MSB 방식으로 X 값을 1 bit씩 8회 출력합니다. (1bite = 8bit)
 ```C
 void send(uint8_t X) 
@@ -158,7 +158,7 @@ void send_port(uint8_t X, uint8_t port)
 <br/>
 
 #### 2. I2C 
-* 명령 테이블에 등록된 16 bit 정보를 Slave 주소로 전송합니다. (8 + 8 = 16)
+* 명령 테이블에 등록된 16 bit 정보를 슬레이브 주소로 전송합니다. (8 + 8 = 16)
 ```C
 void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data) 
 {
@@ -168,7 +168,7 @@ void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data)
 	HAL_I2C_Master_Transmit(&hi2c2, address, dt, 2, 10);
 }
 ```
-* Buffer의 1,024 bit 정보를 Slave 주소에 전송합니다. (128 * 8 = 1,024)
+* 슬레이브 주소에 1,024 bit 정보를 전송합니다. (128 * 8 = 1,024)
 * SSD1306_UpdateScreen 함수에서 해당 함수를 8회 호출하여 8,192 bit 정보를 전송합니다. (128 * 64 = 8,192)
 ```C
 void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_t count) 
@@ -185,7 +185,7 @@ void ssd1306_I2C_WriteMulti(uint8_t address, uint8_t reg, uint8_t *data, uint16_
 <br/>
 
 #### 3. UART
-* HAL Driver의 함수를 사용하여 UART 통신을 수행합니다.
+* HAL 드라이버 함수를 사용하여 UART 통신을 수행합니다.
 * printf 함수를 구현하여 사용합니다.
 ```C
 extern UART_HandleTypeDef *huart1;
@@ -232,7 +232,7 @@ void OneWire_SelectWithPointer(OneWire_t *OneWireStruct, uint8_t *ROM) {
 }
 ```
 * LSB 방식으로 8 bit 정보를 전송합니다. (8 bit 정보는 명령 테이블 통해 확인할 수 있습니다.)
-* SetResolution 함수와 StartAll 함수에서 Slave(Sensor)에 명령 및 ROM 주소를 전송할 때 사용합니다.  
+* SetResolution 함수와 StartAll 함수에서 슬레이브에 명령과 ROM 주소를 전송할 때 사용합니다.  
 ```C
 void OneWire_WriteByte(OneWire_t *OneWireStruct, uint8_t byte) 
 {
