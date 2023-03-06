@@ -101,6 +101,9 @@ void EXTI0_IRQHandler(void)
 	before_time = HAL_GetTick();
 }
 ```
+
+<br/>
+
 * TIM3 prescaler: 72, period: 100으로 설정하여 100us 마다 Timer를 실행합니다. ((72 / 72M) * 100 = 100u)
 * 센서 초기화 상태와 OneWire 실행 상태를 확인하고 참이라면 현재온도를 FND에 표시합니다.
 ```C
@@ -135,6 +138,9 @@ void send(uint8_t X)
 	}
 }
 ```
+
+<br/>
+
 * STM32에서 제공하는 SPI 기능을 사용합니다. (SPI -> DIO, SCLK), (GPIO -> RCLK)
 ```C
 static SPI_HandleTypeDef *fhspi;
@@ -144,6 +150,9 @@ void send(uint8_t X)
  	HAL_SPI_Transmit(fhspi, &X, 1, 100);
 }
 ```
+
+<br/>
+
 * 16bit 정보를 전송하고 RCLK을 LOW로 출력하고 HIGH로 출력합니다.
 ```C
 void send_port(uint8_t X, uint8_t port) 
@@ -168,6 +177,9 @@ void ssd1306_I2C_Write(uint8_t address, uint8_t reg, uint8_t data)
 	HAL_I2C_Master_Transmit(&hi2c2, address, dt, 2, 10);
 }
 ```
+
+<br/>
+
 * 슬레이브 주소에 1,024 bit 정보를 전송합니다. (128 * 8 = 1,024)
 * SSD1306_UpdateScreen 함수에서 해당 함수를 8회 호출하여 8,192 bit 정보를 전송합니다. (128 * 64 = 8,192)
 ```C
@@ -220,6 +232,8 @@ uint8_t OneWire_Reset(OneWire_t *OneWireStruct)
 }
 ```
 
+<br/>
+
 * ROM 주소를 선택합니다. 
 ```C
 void OneWire_SelectWithPointer(OneWire_t *OneWireStruct, uint8_t *ROM) {
@@ -231,6 +245,9 @@ void OneWire_SelectWithPointer(OneWire_t *OneWireStruct, uint8_t *ROM) {
 	
 }
 ```
+
+<br/>
+
 * LSB 방식으로 8 bit 정보를 전송합니다. (8 bit 정보는 명령 테이블 통해 확인할 수 있습니다.)
 * SetResolution 함수와 StartAll 함수에서 슬레이브에 명령과 ROM 주소를 전송할 때 사용합니다.  
 ```C
@@ -244,6 +261,9 @@ void OneWire_WriteByte(OneWire_t *OneWireStruct, uint8_t byte)
 	}
 }
 ```
+
+<br/>
+
 * 센서의 전환 상태를 확인하고 bit 정보가 완료(1) 실행(0)을 반환합니다.
 ```C
 uint8_t OneWire_ReadBit(OneWire_t *OneWireStruct)
