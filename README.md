@@ -102,7 +102,7 @@ void EXTI0_IRQHandler(void)
 }
 ```
 * TIM3 prescaler: 72, period: 100으로 설정하여 100us 마다 Timer를 실행합니다. ((72 / 72M) * 100 = 100u)
-* 센서의 초기화 상태와 OneWire 실행 상태를 확인하고 참이라면 현재온도를 FND에 표시합니다.
+* 센서 초기화 상태와 OneWire 실행 상태를 확인하고 참이라면 현재온도를 FND에 표시합니다.
 ```C
 void TIM3_IRQHandler(void)
 {
@@ -144,7 +144,7 @@ void send(uint8_t X)
  	HAL_SPI_Transmit(fhspi, &X, 1, 100);
 }
 ```
-* RCLK을 HIGH -> LOW -> HIGH 순차대로 출력하여 16bit 정보를 전송합니다.
+* 16bit 정보를 전송하고 RCLK을 LOW로 출력하고 HIGH로 출력합니다.
 ```C
 void send_port(uint8_t X, uint8_t port) 
 {
