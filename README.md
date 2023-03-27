@@ -14,15 +14,15 @@
 * Part : STM32F103C8T6
 * Manufacturer : ST-Microelectronics
 * Core : ARM Cortex-M3
-* Clock speed(MAX) : 72MHz
+* Clock Speed(MAX) : 72MHz
 * Package : LQFP 48 pin
 
 <br/> <br/>
 
-## Pinout configuration
+## Pinout Configuration
 <a href="#"><img src="https://github.com/hmh2683/HeatingSystem/blob/main/image/pinout.png" width="400px" height="400px"></a>
 
-### System core
+### System Core
 * (GPIO) PB0:UP_BUTTON, PB1:SET_BUTTON, PB2:DOWN_BUTTON, PB12:START_SW
 * (GPIO) PB5:RELAY, PB6:BUTTON_LED, PB7:START_LED 
 * (GPIO) PB14:FND_RCLK, PA3:TEMP_DATA
@@ -34,36 +34,36 @@
 ### Timers
 * TIM2(Sensor)
   * Prescaler : 71
-  * Counter period : 65535
+  * Counter Period : 65535
 * TIM3(FND)
   * Prescaler : 71
-  * Counter period : 99
+  * Counter Period : 99
 
 ### Connectivity
 * SPI2(FND)
-  * Data size : 8bit
-  * First bit : MSB
+  * Data Size : 8bit
+  * First Bit : MSB
   * Prescaler : 16
-  * Clock polarity : High
-  * Clock phase : 1 Edge
+  * Clock Polarity : High
+  * Clock Phase : 1 Edge
 * I2C2(OLED)
-  * Speed mode : Fast Mode
-  * Clock speed : 400000 Hz
-  * Fast mode duty cycle : Duty cycle Tlow/Thigh = 2
+  * Speed Mode : Fast Mode
+  * Clock Speed : 400000 Hz
+  * Fast Mode Duty Cycle : Duty cycle Tlow/Thigh = 2
 * USART1(FTDI)
-  * Baud rate : 115200 Bits/s
-  * Word length : 8 Bit
+  * Baud Rate : 115200 Bits/s
+  * Word Length : 8 Bit
 * ONEWIRE(Sensor)
 
 <br/> <br/>
 
-## Clock configuration
+## Clock Configuration
 * STM32 MCU의 수정 발진기를 사용하여 72 MHz의 클럭 주파수를 생성합니다.
 <a href="#"><img src="https://github.com/hmh2683/HeatingSystem/blob/main/image/clock.png" width="1000px" height="400px"></a> 
 
 <br/> <br/>
 
-## Code review
+## Code Review
 ### Main
 * SelectButton 함수에서 버튼 입력에 대한 OLED, LED, USART 를 제어합니다. 
 * 온도 변환 상태를 확인하고 현재온도를 반환합니다. 
