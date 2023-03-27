@@ -32,7 +32,7 @@
 * (RCC) PC14:RCC_OSC32_IN, PC13:RCC_OSC32_OUT, PD0:RCC_OSC_IN, PD1:RCC_OSC_OUT
 
 ### Timers
-* TIM2(SENSOR)
+* TIM2(Sensor)
   * Prescaler : 71
   * Counter Period : 65535
 * TIM3(FND)
@@ -53,7 +53,7 @@
 * USART1(FTDI)
   * Baud Rate : 115200 Bits/s
   * Word Length : 8 Bit
-* ONEWIRE(SENSOR)
+* ONEWIRE(Sensor)
 
 <br/> <br/>
 
