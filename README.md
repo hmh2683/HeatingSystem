@@ -1,4 +1,4 @@
-# Heating system  
+# Heating System  
 * 개발 기간 : 2022.03 ~ 2022.08 
 * 개발 환경 : STM32CubeIDE 1.9.0
 * 개발 언어 : C
