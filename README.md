@@ -23,36 +23,36 @@
 <a href="#"><img src="https://github.com/hmh2683/HeatingSystem/blob/main/image/pinout.png" width="400px" height="400px"></a>
 
 ### System Core
-* GPIO -> INPUT -> UP_BUTTON, SET_BUTTON, DOWN_BUTTON, START_SW
-* GPIO -> OUTPUT -> TEMP_DATA, RELAY, BUTTON_LED, START_LED, FND_RCLK
-* SPI -> FND_SCLK, FND_DIO
-* I2C -> I2C2_SCL, I2C2_SDA
-* SYS -> JTMS-SWDIO, SYS_JTCK-SWCLK
-* RCC -> RCC_OSC32_IN, RCC_OSC32_OUT, RCC_OSC_IN, RCC_OSC_OUT
+* (GPIO:INPUT) PB0:UP_BUTTON, PB1:SET_BUTTON, PB2:DOWN_BUTTON, PB12:START_SW
+* (GPIO:OUTPUT) PA3:TEMP_DATA, PB5:RELAY, PB6:BUTTON_LED, PB7:START_LED, PB14:FND_RCLK
+* (SPI) PB13:FND_SCLK, PB15:FND_DIO
+* (I2C) PB10:I2C2_SCL, PB11:I2C2_SDA
+* (SYS) PA13:JTMS-SWDIO, PA14:SYS_JTCK-SWCLK
+* (RCC) PC14:RCC_OSC32_IN, PC13:RCC_OSC32_OUT, PD0:RCC_OSC_IN, PD1:RCC_OSC_OUT
 
 ### Timers
-* TIM2 -> TEMPSENSOR
+* TIM2(SENSOR)
   * Prescaler : 71
   * Counter Period : 65535
-* TIM3 -> FND
+* TIM3(FND)
   * Prescaler : 71
   * Counter Period : 99
 
 ### Connectivity
-* SPI2 -> FND
+* SPI2(FND)
   * Data Size : 8bit
   * First Bit : MSB
   * Prescaler : 16
   * Clock Polarity : High
   * Clock Phase : 1 Edge
-* I2C2 -> OLED
+* I2C2(OLED)
   * Speed Mode : Fast Mode
   * Clock Speed : 400000 Hz
   * Fast Mode Duty Cycle : Duty cycle Tlow/Thigh = 2
-* USART1 -> FTDI
+* USART1(FTDI)
   * Baud Rate : 115200 Bits/s
   * Word Length : 8 Bit
-* ONEWIRE -> SENSOR
+* ONEWIRE(SENSOR)
 
 <br/> <br/>
 
